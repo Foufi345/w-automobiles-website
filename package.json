@@ -1,0 +1,53 @@
+{
+  "name": "w-automobiles-algerie",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "node scripts/build-hero-images.mjs",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "hero:images": "node scripts/build-hero-images.mjs",
+    "car:prepare": "node scripts/prepare-car.mjs",
+    "i18n:check": "node scripts/check-i18n.mjs",
+    "seo:check": "node scripts/check-seo.mjs",
+    "seed": "node --env-file-if-exists=.env.local scripts/seed-cars.ts"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@gsap/react": "^2.1.2",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.2",
+    "@types/three": "^0.187.0",
+    "gsap": "^3.15.1",
+    "lenis": "^1.3.27",
+    "next": "^14.2.15",
+    "next-intl": "^4.15.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "server-only": "^0.0.1",
+    "three": "^0.187.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@gltf-transform/cli": "^4.5.1",
+    "@gltf-transform/core": "^4.5.1",
+    "@gltf-transform/extensions": "^4.5.1",
+    "@gltf-transform/functions": "^4.5.1",
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.20",
+    "draco3dgltf": "^1.5.9",
+    "meshoptimizer": "^1.3.0",
+    "postcss": "^8.4.47",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.5.4"
+  }
+}

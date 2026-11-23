@@ -1,0 +1,60 @@
+{
+  "acceptance1_pointerAndScrollStatic": {
+    "before": {
+      "cgTransform": "matrix(1, 0, 0, 1, 0, 0)",
+      "ggTransform": "none"
+    },
+    "afterHover": {
+      "cgTransform": "matrix(1, 0, 0, 1, 0, 0)",
+      "ggTransform": "none"
+    },
+    "afterScroll": {
+      "cgTransform": "matrix(1, 0, 0, 1, 0, 0)",
+      "ggTransform": "none"
+    },
+    "hoverUnchanged": true,
+    "scrollUnchanged": true
+  },
+  "acceptance2_shadowAttachmentAndLightPoolSync": {
+    "maxTireShadowDriftNormalizedX": 0.0,
+    "maxTireShadowDriftNormalizedY": 0,
+    "shadowsNeverSeparate": true,
+    "maxLeftGlowPoolOpacityDiff": 0.0,
+    "maxRightGlowPoolOpacityDiff": 0,
+    "poolsPulseWithHeadlights": true,
+    "idleLeftOpacityObservedRange": [
+      0.8,
+      1
+    ],
+    "idleRightOpacityObservedRange": [
+      0.8,
+      1
+    ],
+    "videoPath": "/Users/foufi/Desktop/w_automobiles_algerie website/qa/hero-grounded/hero-car-ground-motion.webm"
+  },
+  "acceptance3_cpu4xFpsAndLayerCount": {
+    "cpu4xIntroFps": 59.0,
+    "fpsPass": true,
+    "idleAnimatedLayersCount": 4,
+    "idleAnimatedLayers": [
+      "pool-left",
+      "pool-right",
+      "glow-left",
+      "glow-right"
+    ],
+    "maxLayersLimit": 6,
+    "layerCountPass": true
+  },
+  "acceptance4_langSwitchAndReducedMotion": {
+    "languageSwitchDoesNotReplayIntro": true,
+    "reducedMotionFinalState": {
+      "carGroupOpacity": 1,
+      "carGroupTransform": "matrix(1, 0, 0, 1, 0, 0)",
+      "reflOpacity": 0.5,
+      "tireShadowOpacity": 1,
+      "glowLOpacity": 1,
+      "poolLOpacity": 1,
+      "willChangeCount": 0
+    }
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "modelName": "2020 Audi RS7 Sportback (C8)",
+  "author": "Ddiaz Design",
+  "sourceUrl": "https://sketchfab.com/3d-models/2020-audi-rs7-sportback-61dd9575a8c645558aa912042af0cfc1",
+  "license": "CC-BY-NC-SA-4.0",
+  "units": "meters",
+  "forwardAxis": "+Z",
+  "upAxis": "+Y",
+  "wheelRadius": 0.3647,
+  "wheelbase": 2.9296,
+  "trackWidth": 1.6434,
+  "centerOfMassHeight": 0.5418,
+  "wheelCenters": {
+    "FL": [
+      0.8222,
+      0.3655,
+      1.4648
+    ],
+    "FR": [
+      -0.8222,
+      0.3655,
+      1.4648
+    ],
+    "RL": [
+      0.8212,
+      0.3644,
+      -1.4648
+    ],
+    "RR": [
+      -0.8212,
+      0.3644,
+      -1.4648
+    ]
+  },
+  "boundingBox": {
+    "min": [
+      -1.0609,
+      0,
+      -2.5837
+    ],
+    "max": [
+      1.0609,
+      1.4257,
+      2.4253
+    ],
+    "size": [
+      2.1217,
+      1.4257,
+      5.009
+    ],
+    "center": [
+      0,
+      0.7128,
+      -0.0792
+    ]
+  },
+  "headlightLamps": {
+    "left": [
+      0.6764,
+      0.6999,
+      2.0429
+    ],
+    "right": [
+      -0.6764,
+      0.6999,
+      2.0429
+    ]
+  },
+  "taillightLamps": {
+    "left": [
+      0.7614,
+      0.79,
+      -2.5192
+    ],
+    "right": [
+      -0.7614,
+      0.79,
+      -2.5192
+    ]
+  },
+  "nodeNames": [
+    "car_body",
+    "steer_FL",
+    "steer_FR",
+    "wheel_FL",
+    "wheel_FR",
+    "wheel_RL",
+    "wheel_RR",
+    "calipers",
+    "glass",
+    "headlights",
+    "drl",
+    "taillights"
+  ],
+  "outputs": {
+    "desktop": {
+      "path": "/models/hero-car.glb",
+      "sizeMB": 0.785,
+      "triangles": 229253
+    },
+    "mobile": {
+      "path": "/models/hero-car-lite.glb",
+      "sizeMB": 0.439,
+      "triangles": 110098
+    }
+  }
+}

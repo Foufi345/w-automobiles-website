@@ -1,0 +1,64 @@
+{
+  "available": true,
+  "hasAlpha": true,
+  "sourceWidth": 2400,
+  "sourceHeight": 1658,
+  "widths": [
+    640,
+    960,
+    1280,
+    1920,
+    2400
+  ],
+  "avifSrcSet": "/hero/hero-car-640.avif 640w, /hero/hero-car-960.avif 960w, /hero/hero-car-1280.avif 1280w, /hero/hero-car-1920.avif 1920w, /hero/hero-car-2400.avif 2400w",
+  "webpSrcSet": "/hero/hero-car-640.webp 640w, /hero/hero-car-960.webp 960w, /hero/hero-car-1280.webp 1280w, /hero/hero-car-1920.webp 1920w, /hero/hero-car-2400.webp 2400w",
+  "fallbackSrc": "/hero/hero-car-2400.webp",
+  "blurDataURL": "",
+  "edges": {
+    "top": "#0b121a",
+    "left": "#0b121a",
+    "right": "#0b121a",
+    "bottom": "#0b121a",
+    "average": "#0b121a"
+  },
+  "cutout": {
+    "src": "/hero/hero-car-cutout.png",
+    "width": 2400,
+    "height": 1658,
+    "aspectRatio": "2400 / 1658",
+    "aspectRatioNumber": 1.4475,
+    "carBounds": {
+      "xStart": 0.75,
+      "xEnd": 99.21,
+      "yStart": 1.09,
+      "yEnd": 98.67
+    },
+    "roofY": 1.09,
+    "bodyBottomY": 91.5,
+    "lowestY": 98.67,
+    "frontTireContacts": {
+      "left": {
+        "x": 9.45,
+        "y": 98.67
+      },
+      "right": {
+        "x": 90.18,
+        "y": 98.61
+      }
+    },
+    "headlights": {
+      "left": {
+        "cx": 14.24,
+        "cy": 48.64,
+        "width": 17.83,
+        "height": 6.63
+      },
+      "right": {
+        "cx": 85.63,
+        "cy": 48.57,
+        "width": 23.67,
+        "height": 9.23
+      }
+    }
+  }
+}

@@ -1,0 +1,752 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --bg: #0B121A;
+    --fg: #F4F1EC;
+    --font-heading: var(--font-serif), Georgia, serif;
+    --font-body: var(--font-sans), system-ui, sans-serif;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+  }
+
+  :lang(ar) {
+    --font-heading: var(--font-arabic-heading), Georgia, serif;
+    --font-body: var(--font-arabic-body), system-ui, sans-serif;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(200, 16, 46, 0.16);
+  }
+
+  /* Arabic typography: +1px base size, +12-15% line-height, no letter-spacing, no uppercase, no italics */
+  html:lang(ar) {
+    font-size: 17px;
+  }
+
+  html:lang(ar) body {
+    line-height: 1.85;
+  }
+
+  html:lang(ar) h1:not(.wordmark),
+  html:lang(ar) h2:not(.wordmark),
+  html:lang(ar) h3:not(.wordmark),
+  html:lang(ar) h4:not(.wordmark),
+  html:lang(ar) p:not(.wordmark),
+  html:lang(ar) span:not(.wordmark),
+  html:lang(ar) a:not(.wordmark),
+  html:lang(ar) button:not(.wordmark),
+  html:lang(ar) label,
+  html:lang(ar) input,
+  html:lang(ar) select,
+  html:lang(ar) textarea {
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    font-style: normal !important;
+  }
+
+  body {
+    @apply font-sans antialiased text-base leading-relaxed selection:bg-brand-red selection:text-ivory;
+    background-color: var(--bg);
+    color: var(--fg);
+    accent-color: #C8102E;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  /* Eliminate 300ms double-tap zoom delay on interactive elements */
+  a,
+  button,
+  [role="button"],
+  input,
+  select,
+  textarea,
+  summary {
+    touch-action: manipulation;
+  }
+
+  /* Prevent iOS Safari auto-zoom on form controls (minimum 16px on touch devices) */
+  @media (pointer: coarse) {
+
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+    select,
+    textarea {
+      font-size: max(1rem, 16px);
+    }
+  }
+
+  /* Prevent page scroll chaining beneath modal dialogs */
+  dialog:modal {
+    overscroll-behavior: contain;
+  }
+
+  dialog::backdrop {
+    overflow: hidden;
+    overscroll-behavior: contain;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-heading {
+    @apply font-serif tracking-tight;
+  }
+
+  /* Accessible visible focus state across all interactive elements */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-red ring-offset-2 ring-offset-navy-950;
+  }
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8;
+  }
+
+  /* W AUTOMOBILES wordmark stays Latin, LTR, uppercase, with its letter-spacing in all languages */
+  .wordmark,
+  .wordmark *,
+  html:lang(ar) .wordmark,
+  html:lang(ar) .wordmark * {
+    font-family: var(--font-serif), Georgia, serif !important;
+    letter-spacing: 0.22em !important;
+    text-transform: uppercase !important;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  /* Fluid typography utilities with clamp() */
+  .text-fluid-hero {
+    font-size: clamp(2.125rem, 1.4rem + 3.2vw, 4.5rem);
+    line-height: 1.1;
+  }
+
+  .text-fluid-h1 {
+    font-size: clamp(1.875rem, 1.45rem + 1.8vw, 3rem);
+    line-height: 1.15;
+  }
+
+  .text-fluid-h2 {
+    font-size: clamp(1.5rem, 1.25rem + 1.1vw, 2.25rem);
+    line-height: 1.2;
+  }
+
+  .prose-measure {
+    max-width: 68ch;
+  }
+
+  /* Safe-area spacing helpers (notch & home indicator) */
+  .safe-pt {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .safe-pb {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-px {
+    padding-inline-start: env(safe-area-inset-left, 0px);
+    padding-inline-end: env(safe-area-inset-right, 0px);
+  }
+
+  /* Viewport height utilities with 100vh fallback -> 100svh */
+  .min-h-svh-safe {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .h-svh-safe {
+    height: 100vh;
+    height: 100svh;
+  }
+
+  .h-dvh-safe {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  /* Stretched-link card focus indicator on the card container */
+  .car-card:has(a.card-primary-link:focus-visible) {
+    @apply ring-2 ring-brand-red ring-offset-2 ring-offset-navy-950;
+  }
+}
+
+/* Landscape phone ergonomics: keep hero within viewport height and allow drawers to scroll */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero-viewport-fit {
+    min-height: 100svh !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+}
+
+/* Dual range slider thumb layering */
+.dual-range-input {
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+.dual-range-input::-webkit-slider-thumb {
+  pointer-events: auto;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 22px;
+  width: 22px;
+  border-radius: 9999px;
+  background: #F4F1EC;
+  border: 2px solid #C8102E;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s ease;
+}
+
+.dual-range-input::-moz-range-thumb {
+  pointer-events: auto;
+  height: 22px;
+  width: 22px;
+  border-radius: 9999px;
+  background: #F4F1EC;
+  border: 2px solid #C8102E;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dual-range-input::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+
+  .dual-range-input::-moz-range-thumb:hover {
+    transform: scale(1.1);
+  }
+}
+
+/* Mobile bottom-sheet dialog for filters */
+.filter-bottom-sheet {
+  margin: auto 0 0 0;
+  width: 100%;
+  max-width: 100%;
+  max-height: 88vh;
+  max-height: 88dvh;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overscroll-behavior: contain;
+}
+
+.filter-bottom-sheet::backdrop {
+  background: rgba(11, 18, 26, 0.8);
+  backdrop-filter: blur(3px);
+}
+
+/* Button fill wipe on hover: only on hover-capable devices */
+.btn-wipe {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-wipe::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #C8102E;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: -1;
+  border-radius: inherit;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-wipe:hover::before {
+    transform: translateY(0%);
+  }
+}
+
+/* Header link underline: logical properties for LTR & RTL */
+.nav-link-underline {
+  position: relative;
+}
+
+.nav-link-underline::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #C8102E;
+  transform: scaleX(0);
+  transform-origin: end;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-link-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: start;
+  }
+}
+
+.nav-link-underline.active-link::after {
+  transform: scaleX(1);
+  transform-origin: start;
+}
+
+/* ============================================================================
+   Showroom Stage Hero — Grid Layout Budget + 2.5D CSS 3D + 4-Side Feathering
+   ============================================================================ */
+:root {
+  --hero-bg: #131316;
+  --header-h: 4rem;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 5rem;
+  }
+}
+
+html.hero-page-bg,
+html.hero-page-bg body {
+  background-color: var(--hero-bg);
+}
+
+.hero-stage {
+  position: relative;
+  margin-top: calc(var(--header-h) * -1);
+  min-height: 560px;
+  height: 100vh;
+  height: 100svh;
+  max-height: 1000px;
+  background-color: var(--hero-bg);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  row-gap: clamp(0.25rem, 0.8svh, 0.65rem);
+  padding-top: calc(var(--header-h) + clamp(0.15rem, 0.6svh, 0.5rem));
+  padding-bottom: clamp(0.5rem, 1.1svh, 1rem);
+  padding-inline: clamp(1rem, 3vw, 2rem);
+  justify-items: center;
+  --vp-x: 50%;
+  --vp-y: 50%;
+  --floor-y: 74%;
+  --tunnel-half-w: max(840px, 64vw);
+  --tunnel-bar-w: max(1850px, 138vw);
+}
+
+/* ============================================================================
+   3D Showroom Light Tunnel Background (Safari-safe, Compositor-only WAAPI)
+   ============================================================================ */
+.hero-tunnel-world,
+.hero-tunnel-flow {
+  transform-style: preserve-3d;
+}
+
+.hero-tunnel-ceiling-bar,
+.hero-tunnel-floor-bar {
+  position: absolute;
+  left: 50%;
+  width: var(--tunnel-bar-w, 1850px);
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Integrated 6px core bar + soft vertical glow in one element (saves 9 DOM nodes and 18 3D quads) */
+.hero-tunnel-bar-silver {
+  background: radial-gradient(
+    ellipse 46% 50% at 50% 50%,
+    rgba(190, 210, 230, 0.95) 0%,
+    rgba(190, 210, 230, 0.85) 14%,
+    rgba(190, 210, 230, 0.24) 36%,
+    rgba(190, 210, 230, 0.08) 65%,
+    transparent 100%
+  );
+}
+
+.hero-tunnel-bar-red {
+  background: radial-gradient(
+    ellipse 46% 50% at 50% 50%,
+    rgba(200, 16, 46, 0.95) 0%,
+    rgba(200, 16, 46, 0.85) 14%,
+    rgba(200, 16, 46, 0.24) 36%,
+    rgba(200, 16, 46, 0.08) 65%,
+    transparent 100%
+  );
+}
+
+.hero-tunnel-floor-silver {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(190, 210, 230, 0.9) 18%,
+    rgba(190, 210, 230, 0.9) 82%,
+    transparent 100%
+  );
+}
+
+.hero-tunnel-floor-red {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(200, 16, 46, 0.9) 18%,
+    rgba(200, 16, 46, 0.9) 82%,
+    transparent 100%
+  );
+}
+
+/* Static Side Rails on left & right corridor walls (-80px above VP, running full depth 0..-3400px) */
+.hero-tunnel-rail {
+  position: absolute;
+  width: 3400px;
+  height: 3px;
+  margin-top: -1.5px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.hero-tunnel-rail-left {
+  left: calc(50% - var(--tunnel-half-w, 840px));
+  transform-origin: 0% 50%;
+  transform: rotateY(-85deg);
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(190, 210, 230, 0.95) 5%,
+    rgba(190, 210, 230, 0.65) 40%,
+    rgba(190, 210, 230, 0.22) 78%,
+    transparent 100%
+  );
+}
+
+.hero-tunnel-rail-right {
+  left: calc(50% + var(--tunnel-half-w, 840px));
+  transform-origin: 0% 50%;
+  transform: rotateY(-95deg);
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(190, 210, 230, 0.95) 5%,
+    rgba(190, 210, 230, 0.65) 40%,
+    rgba(190, 210, 230, 0.22) 78%,
+    transparent 100%
+  );
+}
+
+/* Static Fog, Vignette & Text-Zone Dimmer overlay above tunnel, below car:
+   - Caps tunnel brightness to <=35% in the H1 zone (top 0..24%) and subtitle/CTA zone (bottom 76..100%)
+   - Dissolves top & bottom edges to EXACTLY var(--hero-bg) (zero seam at brightness(5))
+   - Hides far convergence at (--vp-x, --vp-y) with var(--hero-bg) center radius ~18% -> transparent at 55% */
+.hero-tunnel-fog {
+  background:
+    linear-gradient(
+      to bottom,
+      var(--hero-bg) 0%,
+      rgba(11, 18, 26, 0.82) 7%,
+      rgba(11, 18, 26, 0.66) 20%,
+      rgba(11, 18, 26, 0.12) 33%,
+      transparent 48%,
+      rgba(11, 18, 26, 0.16) 68%,
+      rgba(11, 18, 26, 0.68) 81%,
+      rgba(11, 18, 26, 0.88) 93%,
+      var(--hero-bg) 100%
+    ),
+    radial-gradient(
+      circle at var(--vp-x, 50%) var(--vp-y, 50%),
+      var(--hero-bg) 0%,
+      var(--hero-bg) 15%,
+      rgba(11, 18, 26, 0.88) 21%,
+      rgba(11, 18, 26, 0.62) 28%,
+      rgba(11, 18, 26, 0.34) 36%,
+      rgba(11, 18, 26, 0.14) 44%,
+      rgba(11, 18, 26, 0.04) 50%,
+      transparent 56%
+    ),
+    radial-gradient(
+      ellipse 90% 80% at 50% 50%,
+      transparent 56%,
+      rgba(11, 18, 26, 0.25) 72%,
+      rgba(11, 18, 26, 0.62) 86%,
+      var(--hero-bg) 100%
+    );
+}
+
+/* Car Row: strictly owns row 2 (minmax(0, 1fr)), with guaranteed bottom clearance >= clamp(16px, 2.2svh, 28px) before subtitle */
+.hero-car-row {
+  grid-row: 2;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: clamp(16px, 2.2svh, 28px);
+  perspective: 1100px;
+  perspective-origin: 50% 60%;
+  pointer-events: none;
+}
+
+.hero-world {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+.hero-layer-3d {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Scene wrapper: fills Car Row height at exact car+floor aspect-ratio; preserves 3D depth for .car-group approach */
+.hero-stage-scene {
+  position: relative;
+  height: 100%;
+  width: auto;
+  aspect-ratio: var(--scene-ar, 1303 / 1000);
+  max-width: 100%;
+  max-height: 100%;
+  margin-inline: auto;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.car-group,
+.ground-group {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Portrait phones: car fills ~86% of viewport width (82..90% target) while keeping exact scene aspect-ratio */
+@media (max-width: 767px) and (orientation: portrait) {
+  .hero-stage-scene {
+    width: min(88vw, 100%);
+    height: auto;
+    max-height: 100%;
+  }
+}
+
+/* F0: Perspective showroom floor plane with radial edge dissolve (no visible rectangle) */
+.hero-floor-perspective {
+  position: absolute;
+  left: 50%;
+  width: 260%;
+  height: 92%;
+  transform: translateX(-50%);
+  perspective: 900px;
+  pointer-events: none;
+}
+
+.hero-floor-plane {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 0%;
+  transform: rotateX(62deg);
+  background: linear-gradient(to bottom,
+      #101923 0%,
+      #0b121a 46%,
+      #070c12 100%);
+  -webkit-mask-image: radial-gradient(ellipse 48% 58% at 50% 42%,
+      #000 0%,
+      rgba(0, 0, 0, 0.85) 34%,
+      rgba(0, 0, 0, 0.28) 62%,
+      transparent 84%);
+  mask-image: radial-gradient(ellipse 48% 58% at 50% 42%,
+      #000 0%,
+      rgba(0, 0, 0, 0.85) 34%,
+      rgba(0, 0, 0, 0.28) 62%,
+      transparent 84%);
+}
+
+.hero-floor-noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("/hero/floor-noise.png");
+  background-repeat: repeat;
+  background-size: 64px 64px;
+  opacity: 0.05;
+}
+
+/* F2: Wet floor reflection mask (no blur filter) */
+.hero-reflection-mask {
+  -webkit-mask-image: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.34) 0%,
+      rgba(0, 0, 0, 0.1) 20%,
+      transparent 38%);
+  mask-image: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.34) 0%,
+      rgba(0, 0, 0, 0.1) 20%,
+      transparent 38%);
+}
+
+/* Soft legibility scrim behind subtitle & CTAs */
+.hero-actions-scrim {
+  background: radial-gradient(ellipse 74% 90% at 50% 52%,
+      rgba(11, 18, 26, 0.78) 0%,
+      rgba(11, 18, 26, 0.38) 58%,
+      transparent 88%);
+}
+
+/* Title & Actions rows sit in normal 2D flow (never inside preserve-3d) */
+.hero-stage-top {
+  grid-row: 1;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-stage-bottom {
+  grid-row: 3;
+  position: relative;
+  z-index: 10;
+}
+
+/* SplitText line masks: extra vertical breathing room for Arabic diacritics/descenders */
+.hero-split-mask {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.06em;
+  margin-block: -0.06em;
+}
+
+html[dir="rtl"] .hero-split-mask {
+  padding-block: 0.16em;
+  margin-block: -0.16em;
+}
+
+.hero-split-line {
+  display: block;
+}
+
+.hero-text-shadow {
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+}
+
+.hero-subtitle-shadow {
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+}
+
+/* Fluid height-aware typography */
+.hero-h1a {
+  font-size: clamp(10px, min(1.15vw, 1.9svh), 14px);
+}
+
+.hero-h1b {
+  font-size: clamp(30px, min(5.2vw, 7.6svh), 72px);
+}
+
+/* Portrait phones: keep 3-row stack + clear floating WhatsApp button at bottom */
+@media (max-width: 767px) and (orientation: portrait) {
+  .hero-stage {
+    padding-bottom: 5.25rem;
+  }
+
+  .hero-h1b {
+    font-size: clamp(28px, min(8.2vw, 7svh), 46px);
+  }
+}
+
+/* Progressive disclosure by viewport HEIGHT */
+/* < 760px: hide brand-names line */
+@media (max-height: 759px) {
+  .hero-brand-line {
+    display: none !important;
+  }
+}
+
+/* < 700px: hide DÉFILER scroll cue and eyebrow badge */
+@media (max-height: 699px) {
+
+  .hero-stage-scroll,
+  .hero-eyebrow {
+    display: none !important;
+  }
+}
+
+/* < 560px (landscape phones, e.g. 844x390): side-by-side layout (text on one side, car on the other) */
+@media (max-height: 559px) and (orientation: landscape) {
+  .hero-stage {
+    min-height: 340px;
+    height: 100svh;
+    max-height: 559px;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    grid-template-rows: auto auto;
+    column-gap: clamp(0.75rem, 2vw, 1.5rem);
+    row-gap: 0.5rem;
+    align-content: center;
+    padding-top: calc(var(--header-h) + 0.25rem);
+    padding-bottom: 0.75rem;
+  }
+
+  .hero-stage-top {
+    grid-column: 1;
+    grid-row: 1;
+    align-items: flex-start;
+    text-align: start;
+    justify-self: start;
+    min-width: 0;
+  }
+
+  .hero-stage-top h1 {
+    align-items: flex-start;
+    margin-top: 0;
+  }
+
+  .hero-stage-bottom {
+    grid-column: 1;
+    grid-row: 2;
+    align-items: flex-start;
+    text-align: start;
+    justify-self: start;
+    min-width: 0;
+  }
+
+  .hero-stage-cta-row {
+    justify-content: flex-start;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    width: auto;
+  }
+
+  .hero-car-row {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    padding-inline-end: 3.75rem;
+    padding-bottom: 0;
+  }
+
+  .hero-h1a {
+    font-size: 10px;
+  }
+
+  .hero-h1b {
+    font-size: clamp(20px, 3.2vw, 30px);
+  }
+
+  .hero-stage-scroll,
+  .hero-eyebrow,
+  .hero-brand-line {
+    display: none !important;
+  }
+}
