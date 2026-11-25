@@ -36,13 +36,18 @@ interface CarDetailPageProps {
 }
 
 export async function generateStaticParams() {
-  const cars = await getAllCars();
-  return routing.locales.flatMap((locale) =>
-    cars.map((car) => ({
-      locale,
-      slug: car.slug,
-    }))
-  );
+  try {
+    const cars = await getAllCars();
+    return routing.locales.flatMap((locale) =>
+      cars.map((car) => ({
+        locale,
+        slug: car.slug,
+      }))
+    );
+  } catch (err) {
+    console.warn("generateStaticParams: unable to pre-render vehicle slugs at build time, falling back to on-demand rendering", err);
+    return [];
+  }
 }
 
 export async function generateMetadata({

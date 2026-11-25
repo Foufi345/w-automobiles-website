@@ -41,6 +41,18 @@ const nextConfig = {
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+  webpack: (config) => {
+    config.infrastructureLogging = {
+      level: "error",
+    };
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings || []),
+      { module: /@eloqnt\/messages/ },
+      /PackFileCacheStrategy/,
+      /Serializing big strings/,
+    ];
+    return config;
+  },
   async headers() {
     return [
       {

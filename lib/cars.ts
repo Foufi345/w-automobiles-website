@@ -116,19 +116,25 @@ export function mapCarRowToCar(row: CarRow, locale: string = "fr"): Car {
  */
 const getAllCarRowsCached = unstable_cache(
   async (): Promise<CarRow[]> => {
-    const supabase = createPublicSupabaseClient();
-    const { data, error } = await supabase
-      .from("cars")
-      .select("*")
-      .eq("published", true)
-      .order("created_at", { ascending: false })
-      .order("year", { ascending: false });
+    try {
+      const supabase = createPublicSupabaseClient();
+      const { data, error } = await supabase
+        .from("cars")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false })
+        .order("year", { ascending: false });
 
-    if (error) {
-      throw new Error(`Failed to fetch published cars: ${error.message}`);
+      if (error) {
+        console.warn(`Failed to fetch published cars: ${error.message}`);
+        return [];
+      }
+
+      return data ?? [];
+    } catch (err) {
+      console.warn("Failed to fetch published cars:", err);
+      return [];
     }
-
-    return data ?? [];
   },
   ["cars:all"],
   {
@@ -156,19 +162,25 @@ export async function getCarBySlug(
 ): Promise<Car | undefined> {
   const fetchBySlug = unstable_cache(
     async (): Promise<CarRow | null> => {
-      const supabase = createPublicSupabaseClient();
-      const { data, error } = await supabase
-        .from("cars")
-        .select("*")
-        .eq("slug", slug)
-        .eq("published", true)
-        .maybeSingle();
+      try {
+        const supabase = createPublicSupabaseClient();
+        const { data, error } = await supabase
+          .from("cars")
+          .select("*")
+          .eq("slug", slug)
+          .eq("published", true)
+          .maybeSingle();
 
-      if (error) {
-        throw new Error(`Failed to fetch car "${slug}": ${error.message}`);
+        if (error) {
+          console.warn(`Failed to fetch car "${slug}": ${error.message}`);
+          return null;
+        }
+
+        return data ?? null;
+      } catch (err) {
+        console.warn(`Failed to fetch car "${slug}":`, err);
+        return null;
       }
-
-      return data ?? null;
     },
     ["car:by-slug", slug],
     {
@@ -186,19 +198,25 @@ export async function getCarBySlug(
  */
 const getFeaturedCarRowsCached = unstable_cache(
   async (): Promise<CarRow[]> => {
-    const supabase = createPublicSupabaseClient();
-    const { data, error } = await supabase
-      .from("cars")
-      .select("*")
-      .eq("published", true)
-      .order("featured", { ascending: false })
-      .order("created_at", { ascending: false });
+    try {
+      const supabase = createPublicSupabaseClient();
+      const { data, error } = await supabase
+        .from("cars")
+        .select("*")
+        .eq("published", true)
+        .order("featured", { ascending: false })
+        .order("created_at", { ascending: false });
 
-    if (error) {
-      throw new Error(`Failed to fetch featured cars: ${error.message}`);
+      if (error) {
+        console.warn(`Failed to fetch featured cars: ${error.message}`);
+        return [];
+      }
+
+      return data ?? [];
+    } catch (err) {
+      console.warn("Failed to fetch featured cars:", err);
+      return [];
     }
-
-    return data ?? [];
   },
   ["cars:featured"],
   {
