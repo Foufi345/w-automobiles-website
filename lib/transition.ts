@@ -118,7 +118,7 @@ function getServerSnapshot(): TransitionSnapshot {
   return SERVER_SNAPSHOT;
 }
 
-function subscribe(listener: () => void): () => void {
+export function subscribeTransition(listener: () => void): () => void {
   listeners.add(listener);
   return () => {
     listeners.delete(listener);
@@ -132,7 +132,7 @@ function subscribe(listener: () => void): () => void {
  */
 export function useTransitionState(): TransitionSnapshot {
   return useSyncExternalStore(
-    subscribe,
+    subscribeTransition,
     getTransitionSnapshot,
     getServerSnapshot
   );

@@ -4,12 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/build-hero-images.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "hero:images": "node scripts/build-hero-images.mjs",
     "car:prepare": "node scripts/prepare-car.mjs",
+    "hero:poster": "node scripts/generate-hero-poster.mjs",
     "i18n:check": "node scripts/check-i18n.mjs",
     "seo:check": "node scripts/check-seo.mjs",
     "seed": "node --env-file-if-exists=.env.local scripts/seed-cars.ts"
@@ -44,6 +43,8 @@
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "draco3dgltf": "^1.5.9",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.35",
     "meshoptimizer": "^1.3.0",
     "postcss": "^8.4.47",
     "sharp": "^0.35.5",

@@ -6,9 +6,10 @@
   :root {
     color-scheme: dark;
     --bg: #0B121A;
+    --navy-950: #0B121A;
     --fg: #F4F1EC;
-    --font-heading: var(--font-serif), Georgia, serif;
-    --font-body: var(--font-sans), system-ui, sans-serif;
+    --font-heading: var(--font-serif, "Cormorant Garamond", Georgia, serif);
+    --font-body: var(--font-sans, "Inter", system-ui, sans-serif);
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-right: env(safe-area-inset-right, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -16,8 +17,8 @@
   }
 
   :lang(ar) {
-    --font-heading: var(--font-arabic-heading), Georgia, serif;
-    --font-body: var(--font-arabic-body), system-ui, sans-serif;
+    --font-heading: var(--font-arabic-heading, "Amiri", Georgia, serif);
+    --font-body: var(--font-arabic-body, "Cairo", system-ui, sans-serif);
   }
 
   html {
@@ -111,12 +112,13 @@
     @apply mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8;
   }
 
-  /* W AUTOMOBILES wordmark stays Latin, LTR, uppercase, with its letter-spacing in all languages */
+  /* W AUTOMOBILES wordmark stays Latin, Cormorant Garamond serif, LTR, uppercase, with its letter-spacing in all languages */
   .wordmark,
   .wordmark *,
   html:lang(ar) .wordmark,
   html:lang(ar) .wordmark * {
-    font-family: var(--font-serif), Georgia, serif !important;
+    font-family: var(--font-serif, "Cormorant Garamond", Georgia, serif) !important;
+    font-style: normal !important;
     letter-spacing: 0.22em !important;
     text-transform: uppercase !important;
     direction: ltr;
@@ -306,10 +308,9 @@
 }
 
 /* ============================================================================
-   Showroom Stage Hero — Grid Layout Budget + 2.5D CSS 3D + 4-Side Feathering
+   Hero Stage — Original Static CSS Dark-Navy Textured Background + Grid Budget
    ============================================================================ */
 :root {
-  --hero-bg: #131316;
   --header-h: 4rem;
 }
 
@@ -319,19 +320,13 @@
   }
 }
 
-html.hero-page-bg,
-html.hero-page-bg body {
-  background-color: var(--hero-bg);
-}
-
 .hero-stage {
   position: relative;
   margin-top: calc(var(--header-h) * -1);
   min-height: 560px;
   height: 100vh;
   height: 100svh;
-  max-height: 1000px;
-  background-color: var(--hero-bg);
+  background-color: transparent;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   row-gap: clamp(0.25rem, 0.8svh, 0.65rem);
@@ -339,151 +334,51 @@ html.hero-page-bg body {
   padding-bottom: clamp(0.5rem, 1.1svh, 1rem);
   padding-inline: clamp(1rem, 3vw, 2rem);
   justify-items: center;
-  --vp-x: 50%;
-  --vp-y: 50%;
-  --floor-y: 74%;
-  --tunnel-half-w: max(840px, 64vw);
-  --tunnel-bar-w: max(1850px, 138vw);
 }
 
-/* ============================================================================
-   3D Showroom Light Tunnel Background (Safari-safe, Compositor-only WAAPI)
-   ============================================================================ */
-.hero-tunnel-world,
-.hero-tunnel-flow {
-  transform-style: preserve-3d;
-}
-
-.hero-tunnel-ceiling-bar,
-.hero-tunnel-floor-bar {
+/* Original static dark-navy textured hero background (layers f -> a from bottom to top,
+   pure CSS, server-rendered on first paint, no mix-blend-mode, no filters, no animation) */
+.hero-bg {
   position: absolute;
-  left: 50%;
-  width: var(--tunnel-bar-w, 1850px);
-  transform-origin: 50% 50%;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* e. Off-center pool above f. Main pool */
+  background-image:
+    radial-gradient(ellipse 38% 42% at 66% 46%, var(--hero-bg-offcenter-pool, rgba(34, 52, 70, 0.30)), transparent 72%),
+    radial-gradient(ellipse 62% 58% at 50% 50%, var(--hero-bg-center, #1B2A3A) 0%, var(--hero-bg-ring, #15202C) 40%, var(--hero-bg-outer-ring, #0F1923) 70%, var(--hero-bg-edge, #0B131A) 100%);
 }
 
-/* Integrated 6px core bar + soft vertical glow in one element (saves 9 DOM nodes and 18 3D quads) */
-.hero-tunnel-bar-silver {
-  background: radial-gradient(
-    ellipse 46% 50% at 50% 50%,
-    rgba(190, 210, 230, 0.95) 0%,
-    rgba(190, 210, 230, 0.85) 14%,
-    rgba(190, 210, 230, 0.24) 36%,
-    rgba(190, 210, 230, 0.08) 65%,
-    transparent 100%
-  );
-}
-
-.hero-tunnel-bar-red {
-  background: radial-gradient(
-    ellipse 46% 50% at 50% 50%,
-    rgba(200, 16, 46, 0.95) 0%,
-    rgba(200, 16, 46, 0.85) 14%,
-    rgba(200, 16, 46, 0.24) 36%,
-    rgba(200, 16, 46, 0.08) 65%,
-    transparent 100%
-  );
-}
-
-.hero-tunnel-floor-silver {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(190, 210, 230, 0.9) 18%,
-    rgba(190, 210, 230, 0.9) 82%,
-    transparent 100%
-  );
-}
-
-.hero-tunnel-floor-red {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(200, 16, 46, 0.9) 18%,
-    rgba(200, 16, 46, 0.9) 82%,
-    transparent 100%
-  );
-}
-
-/* Static Side Rails on left & right corridor walls (-80px above VP, running full depth 0..-3400px) */
-.hero-tunnel-rail {
+/* d. Marbling: feTurbulence(0.006, 3 octaves, stitch, tinted #9FB8D6), tiled at 1400px */
+.hero-bg-marbling {
   position: absolute;
-  width: 3400px;
-  height: 3px;
-  margin-top: -1.5px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  inset: 0;
+  background-image: var(--hero-bg-marbling-uri);
+  background-repeat: repeat;
+  background-size: 1400px 1400px;
+  opacity: var(--hero-bg-marbling-opacity, 0.06);
 }
 
-.hero-tunnel-rail-left {
-  left: calc(50% - var(--tunnel-half-w, 840px));
-  transform-origin: 0% 50%;
-  transform: rotateY(-85deg);
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(190, 210, 230, 0.95) 5%,
-    rgba(190, 210, 230, 0.65) 40%,
-    rgba(190, 210, 230, 0.22) 78%,
-    transparent 100%
-  );
+/* c. Grain: feTurbulence(0.85, 2 octaves, stitch, desaturated), tiled at 200px */
+.hero-bg-grain {
+  position: absolute;
+  inset: 0;
+  background-image: var(--hero-bg-grain-uri);
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: var(--hero-bg-grain-opacity, 0.05);
 }
 
-.hero-tunnel-rail-right {
-  left: calc(50% + var(--tunnel-half-w, 840px));
-  transform-origin: 0% 50%;
-  transform: rotateY(-95deg);
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(190, 210, 230, 0.95) 5%,
-    rgba(190, 210, 230, 0.65) 40%,
-    rgba(190, 210, 230, 0.22) 78%,
-    transparent 100%
-  );
+/* a. Bottom blend (top-most) above b. Vignette */
+.hero-bg-overlays {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to bottom, transparent 86%, var(--navy-950, #0B121A) 100%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, var(--hero-bg-vignette, rgba(5, 9, 14, 0.55)) 100%);
 }
 
-/* Static Fog, Vignette & Text-Zone Dimmer overlay above tunnel, below car:
-   - Caps tunnel brightness to <=35% in the H1 zone (top 0..24%) and subtitle/CTA zone (bottom 76..100%)
-   - Dissolves top & bottom edges to EXACTLY var(--hero-bg) (zero seam at brightness(5))
-   - Hides far convergence at (--vp-x, --vp-y) with var(--hero-bg) center radius ~18% -> transparent at 55% */
-.hero-tunnel-fog {
-  background:
-    linear-gradient(
-      to bottom,
-      var(--hero-bg) 0%,
-      rgba(11, 18, 26, 0.82) 7%,
-      rgba(11, 18, 26, 0.66) 20%,
-      rgba(11, 18, 26, 0.12) 33%,
-      transparent 48%,
-      rgba(11, 18, 26, 0.16) 68%,
-      rgba(11, 18, 26, 0.68) 81%,
-      rgba(11, 18, 26, 0.88) 93%,
-      var(--hero-bg) 100%
-    ),
-    radial-gradient(
-      circle at var(--vp-x, 50%) var(--vp-y, 50%),
-      var(--hero-bg) 0%,
-      var(--hero-bg) 15%,
-      rgba(11, 18, 26, 0.88) 21%,
-      rgba(11, 18, 26, 0.62) 28%,
-      rgba(11, 18, 26, 0.34) 36%,
-      rgba(11, 18, 26, 0.14) 44%,
-      rgba(11, 18, 26, 0.04) 50%,
-      transparent 56%
-    ),
-    radial-gradient(
-      ellipse 90% 80% at 50% 50%,
-      transparent 56%,
-      rgba(11, 18, 26, 0.25) 72%,
-      rgba(11, 18, 26, 0.62) 86%,
-      var(--hero-bg) 100%
-    );
-}
-
-/* Car Row: strictly owns row 2 (minmax(0, 1fr)), with guaranteed bottom clearance >= clamp(16px, 2.2svh, 28px) before subtitle */
+/* Car Row: owns row 2 (minmax(0, 1fr)), measured by computeFraming() for the 3D scene */
 .hero-car-row {
   grid-row: 2;
   position: relative;
@@ -492,124 +387,10 @@ html.hero-page-bg body {
   height: 100%;
   min-height: 0;
   min-width: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: clamp(16px, 2.2svh, 28px);
-  perspective: 1100px;
-  perspective-origin: 50% 60%;
   pointer-events: none;
 }
 
-.hero-world {
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform-style: preserve-3d;
-}
-
-.hero-layer-3d {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* Scene wrapper: fills Car Row height at exact car+floor aspect-ratio; preserves 3D depth for .car-group approach */
-.hero-stage-scene {
-  position: relative;
-  height: 100%;
-  width: auto;
-  aspect-ratio: var(--scene-ar, 1303 / 1000);
-  max-width: 100%;
-  max-height: 100%;
-  margin-inline: auto;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.car-group,
-.ground-group {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* Portrait phones: car fills ~86% of viewport width (82..90% target) while keeping exact scene aspect-ratio */
-@media (max-width: 767px) and (orientation: portrait) {
-  .hero-stage-scene {
-    width: min(88vw, 100%);
-    height: auto;
-    max-height: 100%;
-  }
-}
-
-/* F0: Perspective showroom floor plane with radial edge dissolve (no visible rectangle) */
-.hero-floor-perspective {
-  position: absolute;
-  left: 50%;
-  width: 260%;
-  height: 92%;
-  transform: translateX(-50%);
-  perspective: 900px;
-  pointer-events: none;
-}
-
-.hero-floor-plane {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-origin: 50% 0%;
-  transform: rotateX(62deg);
-  background: linear-gradient(to bottom,
-      #101923 0%,
-      #0b121a 46%,
-      #070c12 100%);
-  -webkit-mask-image: radial-gradient(ellipse 48% 58% at 50% 42%,
-      #000 0%,
-      rgba(0, 0, 0, 0.85) 34%,
-      rgba(0, 0, 0, 0.28) 62%,
-      transparent 84%);
-  mask-image: radial-gradient(ellipse 48% 58% at 50% 42%,
-      #000 0%,
-      rgba(0, 0, 0, 0.85) 34%,
-      rgba(0, 0, 0, 0.28) 62%,
-      transparent 84%);
-}
-
-.hero-floor-noise {
-  position: absolute;
-  inset: 0;
-  background-image: url("/hero/floor-noise.png");
-  background-repeat: repeat;
-  background-size: 64px 64px;
-  opacity: 0.05;
-}
-
-/* F2: Wet floor reflection mask (no blur filter) */
-.hero-reflection-mask {
-  -webkit-mask-image: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0.34) 0%,
-      rgba(0, 0, 0, 0.1) 20%,
-      transparent 38%);
-  mask-image: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0.34) 0%,
-      rgba(0, 0, 0, 0.1) 20%,
-      transparent 38%);
-}
-
-/* Soft legibility scrim behind subtitle & CTAs */
-.hero-actions-scrim {
-  background: radial-gradient(ellipse 74% 90% at 50% 52%,
-      rgba(11, 18, 26, 0.78) 0%,
-      rgba(11, 18, 26, 0.38) 58%,
-      transparent 88%);
-}
-
-/* Title & Actions rows sit in normal 2D flow (never inside preserve-3d) */
+/* Title & Actions rows sit in normal 2D flow above the 3D canvas */
 .hero-stage-top {
   grid-row: 1;
   position: relative;
@@ -622,29 +403,103 @@ html.hero-page-bg body {
   z-index: 10;
 }
 
-/* SplitText line masks: extra vertical breathing room for Arabic diacritics/descenders */
-.hero-split-mask {
-  display: block;
-  overflow: hidden;
-  padding-block: 0.06em;
-  margin-block: -0.06em;
+/* Slow, silky GPU-only hero text reveal synchronized with car braking & settling */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-badge,
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-h1a,
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-h1b,
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-sub,
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-ctas,
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-meta {
+    opacity: 0;
+    pointer-events: none;
+    will-change: opacity, transform;
+  }
+
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-badge {
+    transform: translate3d(0, 14px, 0);
+  }
+
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-h1a {
+    transform: translate3d(0, 18px, 0);
+  }
+
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-h1b {
+    transform: translate3d(0, 24px, 0);
+  }
+
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-sub {
+    transform: translate3d(0, 16px, 0);
+  }
+
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-ctas {
+    transform: translate3d(0, 16px, 0);
+  }
+
+  .hero-stage[data-hero-text="hidden"] .hero-reveal-meta {
+    transform: translate3d(0, 12px, 0);
+  }
+
+  .hero-stage[data-hero-text="reveal"] .hero-reveal-badge {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity 1.45s cubic-bezier(0.37, 0, 0.63, 1),
+      transform 1.75s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-stage[data-hero-text="reveal"] .hero-reveal-h1a {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity 1.75s cubic-bezier(0.37, 0, 0.63, 1) 0.2s,
+      transform 2.05s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+  }
+
+  .hero-stage[data-hero-text="reveal"] .hero-reveal-h1b {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity 1.95s cubic-bezier(0.37, 0, 0.63, 1) 0.45s,
+      transform 2.25s cubic-bezier(0.16, 1, 0.3, 1) 0.45s;
+  }
+
+  .hero-stage[data-hero-text="reveal"] .hero-reveal-sub {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity 1.7s cubic-bezier(0.37, 0, 0.63, 1) 0.72s,
+      transform 1.95s cubic-bezier(0.16, 1, 0.3, 1) 0.72s;
+  }
+
+  .hero-stage[data-hero-text="reveal"] .hero-reveal-ctas {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity 1.65s cubic-bezier(0.37, 0, 0.63, 1) 0.94s,
+      transform 1.9s cubic-bezier(0.16, 1, 0.3, 1) 0.94s;
+  }
+
+  .hero-stage[data-hero-text="reveal"] .hero-reveal-meta {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity 1.55s cubic-bezier(0.37, 0, 0.63, 1) 1.12s,
+      transform 1.8s cubic-bezier(0.16, 1, 0.3, 1) 1.12s;
+  }
 }
 
-html[dir="rtl"] .hero-split-mask {
-  padding-block: 0.16em;
-  margin-block: -0.16em;
-}
-
-.hero-split-line {
-  display: block;
+.hero-stage[data-hero-text="instant"] .hero-reveal-badge,
+.hero-stage[data-hero-text="instant"] .hero-reveal-h1a,
+.hero-stage[data-hero-text="instant"] .hero-reveal-h1b,
+.hero-stage[data-hero-text="instant"] .hero-reveal-sub,
+.hero-stage[data-hero-text="instant"] .hero-reveal-ctas,
+.hero-stage[data-hero-text="instant"] .hero-reveal-meta {
+  opacity: 1;
+  transform: none;
+  transition: none;
 }
 
 .hero-text-shadow {
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
 }
 
 .hero-subtitle-shadow {
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
 }
 
 /* Fluid height-aware typography */
@@ -675,11 +530,16 @@ html[dir="rtl"] .hero-split-mask {
   }
 }
 
-/* < 700px: hide DÉFILER scroll cue and eyebrow badge */
+/* < 700px: hide eyebrow badge */
 @media (max-height: 699px) {
-
-  .hero-stage-scroll,
   .hero-eyebrow {
+    display: none !important;
+  }
+}
+
+/* < 650px: hide DÉFILER scroll cue */
+@media (max-height: 649px) {
+  .hero-stage-scroll {
     display: none !important;
   }
 }

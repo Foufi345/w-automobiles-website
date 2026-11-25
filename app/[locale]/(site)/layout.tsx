@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -10,18 +9,6 @@ import { Footer } from "@/components/Footer";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { PageTransition } from "@/components/motion/PageTransition";
-import { Preloader } from "@/components/motion/Preloader";
-
-const MotionDebugOverlay =
-  process.env.NODE_ENV === "development"
-    ? dynamic(
-        () =>
-          import("@/components/dev/MotionDebugOverlay").then(
-            (m) => m.MotionDebugOverlay
-          ),
-        { ssr: false }
-      )
-    : null;
 
 const baseUrl = SITE_BASE_URL.replace(/\/$/, "");
 
@@ -110,8 +97,6 @@ export default async function SiteLayout({
       <FloatingWhatsApp />
       <SmoothScroll />
       <PageTransition />
-      <Preloader />
-      {MotionDebugOverlay && <MotionDebugOverlay />}
     </>
   );
 }

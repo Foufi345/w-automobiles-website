@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
@@ -14,17 +13,6 @@ import {
 } from "@/lib/seo";
 import { SITE_BASE_URL } from "@/lib/whatsapp";
 import "../globals.css";
-
-const OverflowDetector =
-  process.env.NODE_ENV === "development"
-    ? dynamic(
-        () =>
-          import("@/components/dev/OverflowDetector").then(
-            (m) => m.OverflowDetector
-          ),
-        { ssr: false }
-      )
-    : null;
 
 const baseUrl = SITE_BASE_URL.replace(/\/$/, "");
 
@@ -120,17 +108,16 @@ export default async function LocaleLayout({
     "errors",
   ]);
   const isRtl = locale === "ar";
-  const fontClasses = isRtl
-    ? `${cormorant.variable} ${amiri.variable} ${cairo.variable}`
-    : `${cormorant.variable} ${inter.variable}`;
+  const fontClasses = `${cormorant.variable} ${inter.variable} ${amiri.variable} ${cairo.variable}`;
 
   return (
     <html lang={locale} dir={isRtl ? "rtl" : "ltr"} className={fontClasses}>
-      <body className="min-h-svh-safe flex flex-col bg-navy-950 text-ivory">
+      <body
+        className={`${fontClasses} min-h-svh-safe flex flex-col bg-navy-950 text-ivory`}
+      >
         <NextIntlClientProvider messages={layoutMessages}>
           {children}
         </NextIntlClientProvider>
-        {OverflowDetector && <OverflowDetector />}
       </body>
     </html>
   );

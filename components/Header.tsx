@@ -10,6 +10,7 @@ import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useModalOverlay } from "@/hooks/useModalOverlay";
 import { useTransitionState } from "@/lib/transition";
+import { triggerHeroReplayFromHomeNav } from "@/lib/hero3d/session-state";
 
 export function Header() {
   const locale = useLocale();
@@ -177,6 +178,34 @@ export function Header() {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
+  const handleNavbarHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (
+      e.defaultPrevented ||
+      e.button !== 0 ||
+      e.metaKey ||
+      e.ctrlKey ||
+      e.shiftKey ||
+      e.altKey
+    ) {
+      return;
+    }
+    if (pathname === "/") {
+      const lenis = (
+        window as unknown as {
+          __lenis?: {
+            scrollTo?: (
+              y: number,
+              opts?: { immediate?: boolean; force?: boolean }
+            ) => void;
+          };
+        }
+      ).__lenis;
+      lenis?.scrollTo?.(0, { immediate: true, force: true });
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+    triggerHeroReplayFromHomeNav();
+  };
+
   return (
     <>
       <header
@@ -192,6 +221,7 @@ export function Header() {
           {/* Left: Text Logo + Subtitle (tagline hidden below 380px) */}
           <Link
             href="/"
+            onClick={handleNavbarHomeClick}
             className="group inline-flex min-w-0 flex-col justify-center py-1 min-h-[44px]"
           >
             <span
@@ -216,6 +246,9 @@ export function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={
+                    item.href === "/" ? handleNavbarHomeClick : undefined
+                  }
                   aria-current={active ? "page" : undefined}
                   className={`nav-link-underline whitespace-nowrap inline-flex items-center min-h-[44px] py-2 text-sm font-medium tracking-wide transition-colors ${active ? "active-link text-ivory" : "text-silver hover:text-ivory"
                     }`}
@@ -344,7 +377,12 @@ export function Header() {
                 <li key={item.href} className="mobile-nav-item">
                   <Link
                     href={item.href}
-                    onClick={closeDrawer}
+                    onClick={(e) => {
+                      if (item.href === "/") {
+                        handleNavbarHomeClick(e);
+                      }
+                      closeDrawer();
+                    }}
                     aria-current={active ? "page" : undefined}
                     className={`group flex min-h-[52px] items-center justify-between rounded-xl px-3 py-3 font-serif text-2xl sm:text-3xl transition-colors ${active
                       ? "text-ivory font-semibold"

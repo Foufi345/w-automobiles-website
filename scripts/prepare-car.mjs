@@ -900,6 +900,9 @@ async function main() {
       2
     ).toFixed(4)
   );
+  const tireWidth = Number(
+    ((bFL.size[0] + bFR.size[0] + bRL.size[0] + bRR.size[0]) / 4).toFixed(4)
+  );
   const comHeight = Number((fullBounds.size[1] * 0.38).toFixed(4));
 
   const roundVec3 = (v) => v.map((x) => Number(x.toFixed(4)));
@@ -916,6 +919,7 @@ async function main() {
     wheelRadius,
     wheelbase,
     trackWidth,
+    tireWidth,
     centerOfMassHeight: comHeight,
     wheelCenters: {
       FL: roundVec3(bFL.center),
@@ -1224,12 +1228,12 @@ async function main() {
     ];
 
     if (isLite) {
-      // Simplify mobile model (interior already removed -> 145,688 tris) to ~50% of original total (~108k tris <= 120k budget) with locked borders so exterior panels stay crisp
+      // Gentle error-bounded simplification (~105k tris <= 120k budget) preserving smooth sheet-metal normals
       transforms.push(
         simplify({
           simplifier: MeshoptSimplifier,
-          ratio: 0.72,
-          error: 0.0005,
+          ratio: 0.74,
+          error: 0.0003,
           lockBorder: true,
         })
       );
@@ -1245,7 +1249,7 @@ async function main() {
       draco({
         method: "edgebreaker",
         quantizePosition: 14,
-        quantizeNormal: 10,
+        quantizeNormal: 14,
         quantizeTexcoord: 12,
       })
     );

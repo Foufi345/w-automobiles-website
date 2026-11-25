@@ -39,9 +39,9 @@ const config: Config = {
         "whatsapp-green": "#25D366",
       },
       fontFamily: {
-        serif: ["var(--font-heading)", "Georgia", "serif"],
-        sans: ["var(--font-body)", "system-ui", "sans-serif"],
-        wordmark: ["var(--font-serif)", "Georgia", "serif"],
+        serif: ['var(--font-heading, "Cormorant Garamond", Georgia, serif)'],
+        sans: ['var(--font-body, "Inter", system-ui, sans-serif)'],
+        wordmark: ['var(--font-serif, "Cormorant Garamond", Georgia, serif)'],
       },
       letterSpacing: {
         wordmark: "0.22em",

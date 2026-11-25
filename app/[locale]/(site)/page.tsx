@@ -12,7 +12,6 @@ import {
   buildLocalizedTwitter,
 } from "@/lib/seo";
 import { HeroSection } from "@/components/hero/HeroSection";
-import { HERO_ASSETS, HERO_SCENE } from "@/lib/hero-scene";
 import { FeaturedCarsHorizontal } from "@/components/home/FeaturedCarsHorizontal";
 import { BrandsMarquee } from "@/components/home/BrandsMarquee";
 import { CountersRow } from "@/components/home/CountersRow";
@@ -95,17 +94,8 @@ export default async function HomePage({
 
   return (
     <NextIntlClientProvider messages={homeMessages}>
-      {HERO_ASSETS.available && (
-        <link
-          rel="preload"
-          as="image"
-          type="image/webp"
-          href={HERO_SCENE.carSrc}
-          fetchPriority="high"
-        />
-      )}
       <div className="flex flex-col">
-        {/* 1. HERO SECTION (2.5D Showroom Stage & GSAP Motion) */}
+        {/* 1. HERO SECTION (Real-Time 3D Neon Corridor & Audi RS7 Sportback) */}
         <HeroSection />
 
         {/* 2. VÉHICULES EN VEDETTE (Pinned horizontal scroll desktop / swipe mobile) */}

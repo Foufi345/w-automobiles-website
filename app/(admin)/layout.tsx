@@ -40,9 +40,7 @@ export default async function AdminRootLayout({
 }>) {
   const locale = getAdminLocale();
   const isRtl = locale === "ar";
-  const fontClasses = isRtl
-    ? `${cormorant.variable} ${amiri.variable} ${cairo.variable}`
-    : `${cormorant.variable} ${inter.variable}`;
+  const fontClasses = `${cormorant.variable} ${inter.variable} ${amiri.variable} ${cairo.variable}`;
 
   const allMessages = (await import(`@/messages/${locale}.json`)).default;
   const adminClientMessages = pickMessages(allMessages, [
@@ -53,7 +51,9 @@ export default async function AdminRootLayout({
 
   return (
     <html lang={locale} dir={isRtl ? "rtl" : "ltr"} className={fontClasses}>
-      <body className="min-h-svh-safe flex flex-col bg-navy-950 text-ivory">
+      <body
+        className={`${fontClasses} min-h-svh-safe flex flex-col bg-navy-950 text-ivory`}
+      >
         <NextIntlClientProvider locale={locale} messages={adminClientMessages}>
           {children}
         </NextIntlClientProvider>

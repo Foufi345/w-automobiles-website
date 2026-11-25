@@ -9,6 +9,7 @@
   "wheelRadius": 0.3647,
   "wheelbase": 2.9296,
   "trackWidth": 1.6434,
+  "tireWidth": 0.3082,
   "centerOfMassHeight": 0.5418,
   "wheelCenters": {
     "FL": [
@@ -95,13 +96,13 @@
   "outputs": {
     "desktop": {
       "path": "/models/hero-car.glb",
-      "sizeMB": 0.785,
+      "sizeMB": 0.939,
       "triangles": 229253
     },
     "mobile": {
       "path": "/models/hero-car-lite.glb",
-      "sizeMB": 0.439,
-      "triangles": 110098
+      "sizeMB": 0.526,
+      "triangles": 114380
     }
   }
 }
